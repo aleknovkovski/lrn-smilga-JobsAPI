@@ -1,5 +1,7 @@
+const { StatusCodes } = require('http-status-codes')
+
 async function register(req, res) {
-    res.json({message: 'Register route', submitted: req.body} )
+    res.status(StatusCodes.CREATED).json({message: 'Register route', submitted: req.body} )
 }
 
 async function login(req, res) {
