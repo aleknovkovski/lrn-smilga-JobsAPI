@@ -1,5 +1,5 @@
 async function register(req, res) {
-    res.send('Register route')
+    res.json({message: 'Register route', submitted: req.body} )
 }
 
 async function login(req, res) {
