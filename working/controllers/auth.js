@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const {BadRequestError, UnauthenticatedError} = require("../errors");
 
 async function register(req, res) {
     const user = await User.create({...req.body})
@@ -13,7 +14,23 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-    res.send('Login route')
+    const {email, password} = req.body
+
+    if(!email || !password) {
+        throw new BadRequestError('Please provide email and password')
+    }
+    const user = await User.findOne({email})
+
+    if(!user) {
+        throw new UnauthenticatedError('User not found')
+    }
+
+    res.status(StatusCodes.OK).json({
+        message: 'Login route',
+        submitted: req.body,
+        user: { name: user.name },
+        token: user.getJWTToken() } )
+
 }
 
 module.exports = {
