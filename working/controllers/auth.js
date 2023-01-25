@@ -25,12 +25,16 @@ async function login(req, res) {
         throw new UnauthenticatedError('User not found')
     }
 
+    const isPasswordCorrect = await user.comparePasswords(password)
+    if(!isPasswordCorrect) {
+        throw new UnauthenticatedError('Wrong password')
+    }
+
     res.status(StatusCodes.OK).json({
         message: 'Login route',
         submitted: req.body,
         user: { name: user.name },
         token: user.getJWTToken() } )
-
 }
 
 module.exports = {
