@@ -11,10 +11,16 @@ async function getJob (req, res) {
 }
 
 async function createJob (req, res) {
-    res.json({
+
+    const createdBy = req.user.userId;
+    const {company, position} = req.body;
+    const job = await Job.create({position, company, createdBy})
+
+    res.status(StatusCodes.CREATED).json({
         message: 'Create a job',
         user: req.user,
-        request: req.body
+        request: req.body,
+        job
     });
 }
 
