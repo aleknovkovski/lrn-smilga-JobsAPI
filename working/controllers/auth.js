@@ -8,7 +8,7 @@ async function register(req, res) {
     const token = jwt.sign({userId: user._id.toString(), name: user.name}, 'jwtSecret')
     res.status(StatusCodes.CREATED).json({
         message: 'Register route',
-        submitted: req.body, user,
+        submitted: req.body,
         user: { name: user.name },
         token: user.getJWTToken() } )
 }
