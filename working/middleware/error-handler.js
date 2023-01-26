@@ -6,6 +6,12 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     message: err.message || "Something went wrong, try again later"
   }
 
+  if (err.code && err.code === 11000) {
+    const keyValue = Object.keys(err.keyValue)
+    customError.message = `Duplicate value entered for ${keyValue} field, please choose another value`
+    customError.statusCode = 400
+  }
+
   return res.status(customError.statusCode).json({ message: customError.message })
 }
 
